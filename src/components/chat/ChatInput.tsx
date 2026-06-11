@@ -40,15 +40,21 @@ export function ChatInput({ value, onChange, onSubmit, isLoading }: ChatInputPro
   return (
     <form
       onSubmit={onSubmit}
-      className="border-nutri-border bg-nutri-surface flex items-end gap-2 rounded-2xl border px-3 py-2"
+      translate="no"
+      className="border-nutri-border bg-nutri-surface notranslate focus-within:border-nutri-primary/30 focus-within:ring-nutri-primary/20 flex items-end gap-2.5 rounded-2xl border px-3.5 py-2.5 transition-all focus-within:ring-1"
     >
       {/* Sparkle icon */}
-      <Sparkles size={16} className="text-muted-foreground mb-2 flex-shrink-0" aria-hidden="true" />
+      <Sparkles
+        size={15}
+        className="text-muted-foreground/60 mb-1.5 flex-shrink-0"
+        aria-hidden="true"
+      />
 
       {/* Textarea */}
       <textarea
         ref={textareaRef}
         id="chat-input"
+        translate="no"
         aria-label="Mensagem para a Nutri IA"
         placeholder="Digite sua mensagem..."
         value={value}
@@ -58,11 +64,12 @@ export function ChatInput({ value, onChange, onSubmit, isLoading }: ChatInputPro
         disabled={isLoading}
         rows={1}
         className={cn(
-          'text-foreground placeholder:text-muted-foreground/50 bg-transparent',
-          'flex-1 resize-none text-[12.5px] leading-relaxed',
+          'text-foreground placeholder:text-muted-foreground/40 bg-transparent',
+          'flex-1 resize-none text-[13px] leading-relaxed',
           'focus:outline-none disabled:opacity-50',
           'max-h-[120px] overflow-y-auto',
           'scrollbar-thin scrollbar-track-transparent scrollbar-thumb-white/10',
+          'notranslate',
         )}
       />
 
@@ -73,14 +80,15 @@ export function ChatInput({ value, onChange, onSubmit, isLoading }: ChatInputPro
         aria-label="Enviar mensagem"
         disabled={isLoading || !value.trim()}
         className={cn(
-          'mb-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-xl',
-          'transition-nutri focus-visible:ring-1 focus-visible:ring-white/20 focus-visible:outline-none',
+          'mb-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl',
+          'focus-visible:ring-nutri-primary transition-all duration-200 focus-visible:ring-1 focus-visible:outline-none',
+          'active:scale-95',
           value.trim() && !isLoading
-            ? 'bg-nutri-primary glow-primary text-white hover:opacity-90'
-            : 'bg-nutri-surface-overlay text-muted-foreground cursor-not-allowed',
+            ? 'bg-nutri-primary glow-primary hover:bg-nutri-primary/90 text-white hover:scale-105'
+            : 'text-muted-foreground/40 cursor-not-allowed bg-white/5',
         )}
       >
-        <ArrowUp size={14} strokeWidth={2.5} />
+        <ArrowUp size={15} strokeWidth={2.5} className="transition-transform duration-200" />
       </button>
     </form>
   )

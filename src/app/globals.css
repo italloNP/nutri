@@ -247,3 +247,18 @@
     transform: translateY(-4px);
   }
 }
+
+/* === Prevenir poluição visual de extensões de tradução (Immersive Translate, etc.) === */
+[class*='immersive-translate'],
+[id*='immersive-translate'],
+[class*='imt-fb'],
+immersive-translate-input-button,
+.immersive-translate-clickable-button,
+.immersive-translate-input-button {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+}
