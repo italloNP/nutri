@@ -7,6 +7,7 @@
 import type { Metadata } from 'next'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { DashboardHeader } from '@/components/layout/DashboardHeader'
+import { ChatIA } from '@/components/chat/ChatIA'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -57,28 +58,9 @@ export default function DashboardLayout({ children, chat }: DashboardLayoutProps
             aria-label="Assistente Nutri IA"
             className="flex flex-1 flex-col overflow-hidden"
           >
-            {chat ?? (
-              /* Placeholder — substituído pelo componente ChatIA na Etapa 5 */
-              <ChatPlaceholder />
-            )}
+            {chat ?? <ChatIA />}
           </section>
         </main>
-      </div>
-    </div>
-  )
-}
-
-// ─── Placeholder do Chat (removido na Etapa 5) ───────────────────────────────
-
-function ChatPlaceholder() {
-  return (
-    <div className="flex h-full flex-col items-center justify-center gap-3 p-6">
-      <div className="bg-nutri-primary/10 flex h-12 w-12 items-center justify-center rounded-2xl">
-        <span className="text-2xl">🤖</span>
-      </div>
-      <div className="text-center">
-        <p className="text-foreground text-sm font-medium">Sua Nutri IA</p>
-        <p className="text-muted-foreground mt-1 text-xs">Chat com IA — disponível na Etapa 5</p>
       </div>
     </div>
   )

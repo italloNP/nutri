@@ -1,0 +1,25 @@
+# =============================================================================
+# docker-compose.yml
+# PostgreSQL 16 para desenvolvimento local do Nutri SaaS.
+# Substitua por Neon / Supabase ao fazer deploy em produção.
+# =============================================================================
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nutri_postgres
+    environment:
+      POSTGRES_DB: nutri_db
+      POSTGRES_USER: nutri
+      POSTGRES_PASSWORD: nutri_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U nutri -d nutri_db']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

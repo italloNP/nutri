@@ -1,24 +1,29 @@
 // =============================================================================
 // app/dashboard/page.tsx
 // Página principal do dashboard — Server Component.
-// Renderiza os placeholders de Calendário e Gráfico (implementados na Etapa 4).
+// Etapa 4: Calendário e Gráfico reais substituindo os placeholders.
 // =============================================================================
 import type { Metadata } from 'next'
-import { CalendarPlaceholder } from '@/components/calendar/CalendarPlaceholder'
-import { ChartPlaceholder } from '@/components/chart/ChartPlaceholder'
+import { NutriCalendar } from '@/components/calendar/NutriCalendar'
+import { CalorieChart } from '@/components/chart/CalorieChart'
+import { DayModal } from '@/components/calendar/DayModal'
 
 export const metadata: Metadata = {
   title: 'Painel Principal',
+  description: 'Monitore suas calorias, macros e o progresso diário com o Nutri.',
 }
 
 export default function DashboardPage() {
   return (
     <>
       {/* Topo: Calendário de Nutrição (7×5) */}
-      <CalendarPlaceholder />
+      <NutriCalendar />
 
       {/* Base: Gráfico Recharts — Consumo vs. Manutenção */}
-      <ChartPlaceholder />
+      <CalorieChart />
+
+      {/* Modal global — controlado pelo NutriContext (abre ao clicar no calendário) */}
+      <DayModal />
     </>
   )
 }

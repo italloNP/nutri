@@ -11,13 +11,12 @@ import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { MOCK_USER } from '@/lib/mock-data'
+import { CURRENT_USER_NAME } from '@/lib/current-user'
 
 export function DashboardHeader() {
   const [searchValue, setSearchValue] = useState('')
 
-  const initials = MOCK_USER.name
-    .split(' ')
+  const initials = CURRENT_USER_NAME.split(' ')
     .map((n) => n[0])
     .slice(0, 2)
     .join('')

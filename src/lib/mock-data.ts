@@ -39,11 +39,23 @@ function generateId(): string {
   return Math.random().toString(36).slice(2, 11)
 }
 
-/** Adiciona dias a uma data e retorna string ISO (YYYY-MM-DD) */
+/**
+ * Formata uma Date para string local YYYY-MM-DD (sem conversão UTC).
+ * Evita o bug de timezone onde toISOString() retorna o dia anterior
+ * em fusos negativos como BRT (UTC-3).
+ */
+function toLocalDateString(d: Date): string {
+  const year = d.getFullYear()
+  const month = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+/** Adiciona dias a uma data e retorna string YYYY-MM-DD (data local) */
 function addDays(baseDate: Date, days: number): string {
   const d = new Date(baseDate)
   d.setDate(d.getDate() + days)
-  return d.toISOString().split('T')[0]
+  return toLocalDateString(d)
 }
 
 /** Calcula totais de macros a partir de um array de FoodItems */
@@ -445,6 +457,7 @@ const DAY_PROFILES: DayProfile[] = [
 
 function buildDayLogs(): DayLog[] {
   const today = new Date()
+  // Cria o primeiro dia do mês usando a data local (evita offset UTC)
   const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1)
 
   return DAY_PROFILES.map((profile, index) => {
@@ -501,9 +514,9 @@ export function getMockDayLog(date: string): DayLog | null {
   return getDayLogs().find((d) => d.date === date) ?? null
 }
 
-/** Retorna o DayLog de hoje */
+/** Retorna o DayLog de hoje (usa data local, sem offset UTC) */
 export function getMockTodayLog(): DayLog | null {
-  const today = new Date().toISOString().split('T')[0]
+  const today = toLocalDateString(new Date())
   return getMockDayLog(today)
 }
 
@@ -589,7 +602,8 @@ export function getMockChartAnnotations(): ChartAnnotation[] {
 export function getMockCalendarMonth(year: number, month: number): CalendarMonth {
   const dayLogs = getDayLogs()
   const dayLogMap = new Map(dayLogs.map((d) => [d.date, d]))
-  const todayStr = new Date().toISOString().split('T')[0]
+  // Usa data local para evitar offset UTC em fusos como BRT (UTC-3)
+  const todayStr = toLocalDateString(new Date())
 
   const firstDay = new Date(year, month - 1, 1)
   const lastDay = new Date(year, month, 0)
@@ -603,7 +617,7 @@ export function getMockCalendarMonth(year: number, month: number): CalendarMonth
   // Dias do mês anterior para padding
   for (let i = startOffset - 1; i >= 0; i--) {
     const d = new Date(year, month - 1, -i)
-    const dateStr = d.toISOString().split('T')[0]
+    const dateStr = toLocalDateString(d)
     days.push({
       date: dateStr,
       isCurrentMonth: false,
@@ -615,7 +629,7 @@ export function getMockCalendarMonth(year: number, month: number): CalendarMonth
   // Dias do mês atual
   for (let day = 1; day <= lastDay.getDate(); day++) {
     const d = new Date(year, month - 1, day)
-    const dateStr = d.toISOString().split('T')[0]
+    const dateStr = toLocalDateString(d)
     days.push({
       date: dateStr,
       isCurrentMonth: true,
@@ -628,7 +642,7 @@ export function getMockCalendarMonth(year: number, month: number): CalendarMonth
   const remaining = 35 - days.length
   for (let i = 1; i <= remaining; i++) {
     const d = new Date(year, month, i)
-    const dateStr = d.toISOString().split('T')[0]
+    const dateStr = toLocalDateString(d)
     days.push({
       date: dateStr,
       isCurrentMonth: false,
