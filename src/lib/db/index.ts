@@ -13,12 +13,14 @@ import * as schema from './schema'
 type PostgresClient = ReturnType<typeof postgres>
 
 // Evita múltiplas conexões durante hot-reload no dev
+import { env } from '@/env.mjs'
+
 const globalForDb = globalThis as typeof globalThis & {
   _nutri_pg?: PostgresClient
 }
 
 function createClient(): PostgresClient {
-  const url = process.env.DATABASE_URL
+  const url = env.DATABASE_URL
   if (!url) {
     throw new Error(
       '[nutri/db] DATABASE_URL não definida. ' +
@@ -34,7 +36,7 @@ function createClient(): PostgresClient {
 
 const client = globalForDb._nutri_pg ?? createClient()
 
-if (process.env.NODE_ENV !== 'production') {
+if (env.NODE_ENV !== 'production') {
   globalForDb._nutri_pg = client
 }
 

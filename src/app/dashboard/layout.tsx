@@ -16,11 +16,9 @@ export const metadata: Metadata = {
 
 interface DashboardLayoutProps {
   children: React.ReactNode
-  /** Slot paralelo para o Chat IA (parallel routes — implementado na Etapa 5) */
-  chat?: React.ReactNode
 }
 
-export default function DashboardLayout({ children, chat }: DashboardLayoutProps) {
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     /*
      * Container raiz: 100dvh, overflow-hidden.
@@ -58,7 +56,7 @@ export default function DashboardLayout({ children, chat }: DashboardLayoutProps
             aria-label="Assistente Nutri IA"
             className="flex flex-1 flex-col overflow-hidden"
           >
-            {chat ?? <ChatIA />}
+            <ChatIA />
           </section>
         </main>
       </div>

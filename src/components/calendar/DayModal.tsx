@@ -50,9 +50,16 @@ interface MacroCardProps {
   color: string
 }
 
+import { motion } from 'framer-motion'
+
 function MacroCard({ label, value, unit, color }: MacroCardProps) {
   return (
-    <div className="bg-nutri-surface flex flex-col gap-1 rounded-xl p-3">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+      className="bg-nutri-surface flex flex-col gap-1 rounded-xl p-3"
+    >
       <span className="text-muted-foreground text-[10px] font-medium tracking-wider uppercase">
         {label}
       </span>
@@ -62,17 +69,23 @@ function MacroCard({ label, value, unit, color }: MacroCardProps) {
         </span>
         <span className="text-muted-foreground text-[11px]">{unit}</span>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
 interface MealSectionProps {
   meal: MealEntry
+  index?: number
 }
 
-function MealSection({ meal }: MealSectionProps) {
+function MealSection({ meal, index = 0 }: MealSectionProps) {
   return (
-    <div className="flex flex-col gap-2">
+    <motion.div
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: 'spring', stiffness: 300, damping: 24, delay: index * 0.05 }}
+      className="flex flex-col gap-2"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-foreground text-xs font-semibold">
@@ -98,7 +111,7 @@ function MealSection({ meal }: MealSectionProps) {
           </div>
         ))}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -198,8 +211,8 @@ export function DayModal() {
 
               {/* Meals list */}
               <div className="flex flex-col gap-4">
-                {dayLog.meals.map((meal) => (
-                  <MealSection key={meal.id} meal={meal} />
+                {dayLog.meals.map((meal, index) => (
+                  <MealSection key={meal.id} meal={meal} index={index} />
                 ))}
               </div>
 

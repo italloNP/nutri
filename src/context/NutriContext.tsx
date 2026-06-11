@@ -7,6 +7,7 @@
 'use client'
 
 import { createContext, useContext, useState, type ReactNode } from 'react'
+import { useQueryState, parseAsString } from 'nuqs'
 
 // ─── Tipos do contexto ────────────────────────────────────────────────────────
 
@@ -44,7 +45,8 @@ interface NutriProviderProps {
 export function NutriProvider({ children }: NutriProviderProps) {
   const today = new Date()
 
-  const [selectedDate, setSelectedDate] = useState<string | null>(null)
+  // Sincroniza a data selecionada com a URL (ex: ?date=2026-06-11)
+  const [selectedDate, setSelectedDate] = useQueryState('date', parseAsString)
   const [calendarMonth, setCalendarMonth] = useState<CalendarMonthState>({
     year: today.getFullYear(),
     month: today.getMonth() + 1, // 1-indexed

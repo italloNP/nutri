@@ -6,6 +6,7 @@
 // =============================================================================
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import { ClientProvider } from '@/components/providers/ClientProvider'
 import './globals.css'
 
@@ -55,6 +56,8 @@ interface RootLayoutProps {
   children: React.ReactNode
 }
 
+import { Suspense } from 'react'
+
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
@@ -63,7 +66,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
       suppressHydrationWarning
     >
       <body>
-        <ClientProvider>{children}</ClientProvider>
+        <NuqsAdapter>
+          <Suspense fallback={null}>
+            <ClientProvider>{children}</ClientProvider>
+          </Suspense>
+        </NuqsAdapter>
       </body>
     </html>
   )

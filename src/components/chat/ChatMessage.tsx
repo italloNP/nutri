@@ -21,6 +21,7 @@ function getTextContent(message: UIMessage): string {
     .map((p) => ('text' in p ? p.text : ''))
     .join('')
 }
+import { motion } from 'framer-motion'
 
 export function ChatMessageBubble({ message }: ChatMessageProps) {
   const isUser = message.role === 'user'
@@ -34,7 +35,10 @@ export function ChatMessageBubble({ message }: ChatMessageProps) {
   if (!text) return null
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       className={cn(
         'flex w-full gap-3',
         isUser ? 'flex-row-reverse items-end' : 'flex-row items-start',
@@ -64,7 +68,7 @@ export function ChatMessageBubble({ message }: ChatMessageProps) {
       >
         {text}
       </div>
-    </div>
+    </motion.div>
   )
 }
 

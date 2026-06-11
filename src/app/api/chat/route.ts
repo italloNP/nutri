@@ -19,6 +19,7 @@ import {
 } from '@/lib/dal'
 import { CALORIE_STATUS_LABELS, MEAL_TYPE_LABELS, MEAL_TYPES } from '@/constants/nutrition'
 import type { DayLog, MealType } from '@/types'
+import { env } from '@/env.mjs'
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 
@@ -459,13 +460,13 @@ export async function POST(req: Request) {
   const systemPrompt = await buildSystemPrompt(inputTimestamp)
 
   // Fallback mock se não houver API key configurada
-  if (!process.env.OPENROUTER_API_KEY) {
+  if (!env.OPENROUTER_API_KEY) {
     const lastUser = normalizedMessages.findLast((m) => m.role === 'user')
     const mockResponse = getMockResponse(lastUser?.content?.toLowerCase() ?? '')
     return streamPlainText(mockResponse)
   }
 
-  const model = process.env.OPENROUTER_MODEL ?? 'google/gemini-2.5-flash-preview'
+  const model = env.OPENROUTER_MODEL ?? 'google/gemini-2.5-flash-preview'
 
   // Constrói histórico de mensagens para o OpenRouter
   const conversationHistory: ChatMessage[] = [
@@ -481,7 +482,7 @@ export async function POST(req: Request) {
     const upstream = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': 'http://localhost:3000',
         'X-Title': 'Nutri IA',
